@@ -20,26 +20,16 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
+      - name: Install Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: Install Android SDK packages
-        run: |
-          yes | sdkmanager --licenses
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        with:
+          packages: platforms;android-35,build-tools;35.0.0
 
       - name: Extract project
-        run: |
-          unzip -o Challenge90Android_PhoneBuild.zip
-
-      - name: Check project files
-        run: |
-          ls -la
-          find . -maxdepth 3 -name gradlew -o -name build.gradle -o -name settings.gradle
+        run: unzip -o Challenge90Android_PhoneBuild.zip
 
       - name: Build APK
-        run: |
-          gradle --no-daemon -p Challenge90Android :app:assembleDebug
+        run: gradle --no-daemon -p Challenge90Android :app:assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
